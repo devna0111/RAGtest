@@ -1,36 +1,30 @@
-from transformers import DonutProcessor, VisionEncoderDecoderModel, pipeline
-from PIL import Image
+from langchain_ollama import ChatOllama
+from langchain_core.messages import HumanMessage
+import base64
+from extract_img import extract_image_chunks
+# Ollama 인스턴스
+llm = ChatOllama(model="gemma3:4b")  # 모델명에 :4b, :12b 등 태그 주의 granite3.2-vision:2b
+# granite, gemma3:12b, gemma3:4b, LLaVA 중 gemma3가 그 중 가장 적당한 결과 반환
 
-# 1. Processor, Model 직접 준비 (use_fast=True 명시)
-processor = DonutProcessor.from_pretrained(
-    "naver-clova-ix/donut-base-finetuned-docvqa",
-    use_fast=True
+# 이미지 base64 인코딩
+with open("sample5.png", "rb") as f:
+    img_b64 = base64.b64encode(f.read()).decode("utf-8")
+text = extract_image_chunks("sample5.png")
+# 프롬프트와 이미지를 HumanMessage에 담기
+msg = HumanMessage(
+    content=[
+        {"type": "text", "text": "이미지 속 텍스트 또는 표형태의 json형태로 반환해주세요. 없는 내용은 추가하지 않으며 인식한 내용만 반영합니다."},
+        # {"type": "text", "text": f"다음은 OCR을 통해 추출한 내용을 정리한 것입니다. 참고자료로 활용해주세요.{text}"},
+        {"type": "image_url", "image_url": f"data:image/png;base64,{img_b64}"},
+    ]
 )
-model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
 
-# pipeline에서 tokenizer=processor.tokenizer로 전달!
-pipe = pipeline(
-    "document-question-answering",
-    model=model,
-    tokenizer=processor.tokenizer,             # ★ 이걸로!
-    image_processor=processor.image_processor,
-    # past_key_values=EncoderDecoderCache.from_legacy_cache(past_key_values),
-    device=0 # 0 : gpu / -1 : cpu
-)
-# cmd : set PYTORCH_SDP_ATTENTION_BACKEND=eager
-def extract_structured_doc(image_path):
-    image = Image.open(image_path)
-    prompt = (
-    "<s_docvqa><s_question>"
-    "이미지에 포함된 **모든 텍스트, 표, 그래프, 사진, 도형, 그림**의 내용을 빠짐없이, "
-    "원본의 구조와 정보 손실 없이 최대한 자세히, 구분해서 추출해서 반환해줘."
-    "원본의 순서와 레이아웃을 최대한 반영해"
-    "누락 없이, 요약 없이, 전체 정보를 반환해"
-    "표/그래프/사진은 따로 구분해서 마크다운 표/설명/캡션 형식으로 반환해"
-    "<s_answer>"
-)
-    result = pipe(image=image, question=prompt)
-    return result
-
-if __name__ == "__main__":
-    print(extract_structured_doc("sample4.png"))
+# 결과 받기
+response = llm.invoke([msg])
+print(response.content)
+print(text)
+print('gemma 후처리결과')
+print(llm.invoke(f"""다음은 OCR을 통해 확인한 text입니다.
+                이를 좀 더 자연스럽게 보완해주세요.
+                [OCR로 확인한 text]{text}
+                추가적인 정보는 요하지 않으며 json형식으로 반환합니다."""))
