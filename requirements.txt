@@ -1,0 +1,19 @@
+flask
+jinja2
+python-dotenv
+torch
+transformers
+FlagEmbedding          # BGE-M3 포함
+qdrant-client
+pillow
+python-docx
+python-pptx
+openpyxl
+PyPDF2
+paddleocr             # OCR
+opencv-python-headless
+numpy
+scikit-learn
+tqdm
+# (필요시: paddlepaddle-gpu==2.5.2.post112)  # GPU 사용시
+# 기타 TableOCR 모델 설치는 선택사항(후속)

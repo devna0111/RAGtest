@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}파일 업로드 | 2차프로젝트{% endblock %}
+
+{% block content %}
+<h2>📁 파일 업로드</h2>
+<p>분석할 doc, ppt, pdf, xlsx, png 파일을 업로드해 주세요.</p>
+
+<form id="uploadForm" enctype="multipart/form-data" style="margin-top:1.4rem;">
+    <input type="file" name="file" required>
+    <button type="submit" style="margin-left:1rem; padding:0.4em 1.3em;">업로드</button>
+</form>
+
+<!-- 진행률 표시 -->
+<div id="progressBox" style="display:none; margin-top:1.5rem;">
+    <progress id="progressBar" max="100" value="0" style="width:80%"></progress>
+    <span id="progressText">0%</span>
+</div>
+
+<!-- 업로드 결과/오류/성공 메시지 -->
+<div id="resultBox"></div>
+
+<script>
+document.getElementById('uploadForm').onsubmit = function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+
+    // 진행률 UI
+    document.getElementById('progressBox').style.display = 'block';
+    document.getElementById('progressBar').value = 0;
+    document.getElementById('progressText').innerText = "0%";
+    document.getElementById('resultBox').innerHTML = "";
+
+    // AJAX 파일 업로드
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "{{ url_for('upload') }}", true);
+
+    xhr.upload.onprogress = function(e) {
+        if (e.lengthComputable) {
+            var percent = Math.round((e.loaded / e.total) * 100 * 0.7); // 업로드는 0~70%
+            document.getElementById('progressBar').value = percent;
+            document.getElementById('progressText').innerText = percent + "% (업로드중)";
+        }
+    };
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            document.getElementById('progressBar').value = 80;
+            document.getElementById('progressText').innerText = "80% (분석중)";
+            if (xhr.status == 200) {
+                // 결과
+                var resp = JSON.parse(xhr.responseText);
+                document.getElementById('progressBar').value = 100;
+                document.getElementById('progressText').innerText = "100% (완료)";
+                showResult(resp);
+            } else {
+                document.getElementById('resultBox').innerHTML = "<div style='color:red;'>❌ 업로드/분석 실패</div>";
+            }
+        }
+    };
+
+    xhr.send(formData);
+    return false;
+};
+
+// chunk 결과 표시 함수
+function showResult(resp) {
+    let html = "";
+    if(resp.filename) {
+        html += `<div style="margin-top:2rem;"><strong>✅ 업로드 성공:</strong> ${resp.filename}</div>`;
+    }
+    if(resp.error) {
+        html += `<div style="margin-top:1.5rem; color:red;">${resp.error}</div>`;
+    }
+    if(resp.chunks && resp.chunks.length > 0) {
+        html += `<div style="margin-top:2rem;"><h3>📄 추출된 청크</h3>
+        <div style="background:#fff9ef; padding:1.2rem; border-radius:10px;">`;
+        for(let chunk of resp.chunks) {
+            html += `<div style="margin-bottom:1.2rem; padding:0.8rem; border-bottom:1px solid #e0d3b4;">
+                <strong>Type:</strong> ${chunk.type}<br>
+                <strong>Content:</strong>
+                <pre style="white-space:pre-wrap;">${chunk.content}</pre>
+            </div>`;
+        }
+        html += `</div></div>`;
+    }
+    document.getElementById('resultBox').innerHTML = html;
+}
+</script>
+{% endblock %}
