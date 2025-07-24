@@ -10,5 +10,5 @@ def extract_image_chunks(filepath):
     return [{"type": "ocr", "content": text}] if text else []
 
 if __name__ == "__main__" :
-    print(extract_image_chunks("sample2.png"))
+    print(extract_image_chunks("sample4.png"))
     # print(ocr.predict("imgsample.png")[0]['rec_texts'])

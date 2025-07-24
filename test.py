@@ -3,10 +3,10 @@ from PIL import Image
 
 # 1. Processor, Model 직접 준비 (use_fast=True 명시)
 processor = DonutProcessor.from_pretrained(
-    "naver-clova-ix/donut-base-finetuned-korean",
+    "naver-clova-ix/donut-base-finetuned-docvqa",
     use_fast=True
 )
-model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-korean")
+model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
 
 # pipeline에서 tokenizer=processor.tokenizer로 전달!
 pipe = pipeline(
@@ -33,4 +33,4 @@ def extract_structured_doc(image_path):
     return result
 
 if __name__ == "__main__":
-    print(extract_structured_doc("imgsample.png"))
+    print(extract_structured_doc("sample4.png"))
