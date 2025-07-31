@@ -1,6 +1,6 @@
 .vscode/
 .venv/
 __pycache__/
-img_output_docx/
-img_output_pptx/
 uploads/
+chroma_db_multimodal/
+static/
