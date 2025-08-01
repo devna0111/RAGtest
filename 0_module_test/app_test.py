@@ -3,8 +3,8 @@ import threading
 from flask import Flask, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 
-import document_processor_test
-from rag_pipeline_test import RAGPipeline
+import module_test.document_processor_test as document_processor_test
+from module_test.rag_pipeline_test import RAGPipeline
 
 # --- Flask 및 시스템 설정 ---
 app = Flask(__name__)

@@ -3,7 +3,7 @@ from moviepy import VideoFileClip
 from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 
-def extract_audio(video_path: str, output_path="temp_audio.wav"):
+def extract_audio(video_path: str, output_path="temp_wav/temp_audio.wav"):
     """
     영상에서 오디오만 추출하여 WAV 파일로 저장하는 함수입니다.
     """
