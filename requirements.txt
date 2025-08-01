@@ -4,3 +4,6 @@ langchain-community
 langchain-core
 langchain-ollama
 opencv-python
+fitz
+pdfplumber
+python-pptx

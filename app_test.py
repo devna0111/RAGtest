@@ -3,8 +3,8 @@ import threading
 from flask import Flask, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 
-import document_processor
-from rag_pipeline import RAGPipeline
+import document_processor_test
+from rag_pipeline_test import RAGPipeline
 
 # --- Flask 및 시스템 설정 ---
 app = Flask(__name__)
@@ -26,7 +26,7 @@ def process_and_add_to_db(filepath):
     """백그라운드에서 문서 처리 및 DB 추가를 수행합니다."""
     try:
         # 1. 파일에서 텍스트/이미지 설명 추출
-        texts = document_processor.process_document(filepath)
+        texts = document_processor_test.process_document(filepath)
         
         # 2. 추출된 텍스트를 벡터 DB에 추가
         if texts:
