@@ -106,7 +106,11 @@ if __name__ == "__main__":
         print("[INFO] 추출된 청크 개수:", len(chunks))
         print("\n[INFO] 추출 결과:")
         for c in chunks:
+            print(f"- TYPE: {c['type']}")
+            print(f"  CONTENT: {c['content'][:200]}")  # 200자까지만 미리보기
+            print("  METADATA:", c["metadata"])
             print("-" * 50)
     except Exception as e:
         print("[ERROR] 실행 중 오류 발생:", str(e))
+
 
