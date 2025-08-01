@@ -30,7 +30,7 @@ def pptx_to_markdown_string(pptx_path: str) -> str:
 
 
 if __name__ == "__main__":
-    FILE_PATH = "input_slides.pptx"  # 변환할 PPT 파일명
+    FILE_PATH = "sample.pptx"  
     # OUTPUT_PATH = "output_from_ppt.md"  # 저장할 마크다운 파일명
 
     result = pptx_to_markdown_string(FILE_PATH)
