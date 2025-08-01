@@ -63,7 +63,7 @@ def extract_text_from_docx(file_path: str) -> List[Dict]:
 # 2. 청크 분할 (텍스트 문단 길이 기준)
 # --------------------------
 
-def chunk_text(content: str, max_length=100) -> List[str]:
+def chunk_text(content: str, max_length=1500) -> List[str]:
     """텍스트를 일정 길이로 분할"""
     words = content.split()
     return [" ".join(words[i:i+max_length]) for i in range(0, len(words), max_length)]
@@ -100,7 +100,7 @@ def process_docx(file_path: str) -> List[Dict]:
 if __name__ == "__main__":
     import sys
     try:
-        file = "sample.docx"
+        file = "dohyun/sample.docx"
         print("[INFO] DOCX 파일 처리 시작:", file)
         chunks = process_docx(file)
         print("[INFO] 추출된 청크 개수:", len(chunks))
