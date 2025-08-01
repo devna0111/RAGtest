@@ -1,0 +1,4 @@
+pip install librosa
+pip install mediapipe
+pip install moviepy
+pip install faster-whisper
