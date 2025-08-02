@@ -33,7 +33,7 @@ def make_presentation(wholetext: str) -> str:
     # 실행
     response = summary_chain.invoke("")
 
-    return response.content
+    return "[발표문]" + response.content
 
 if __name__ == "__main__":
     sample_text = "이 문서는 사내 업무 자동화를 위한 가이드입니다. 주요 내용은 RAG기반 문서 처리와 요약, 벡터 DB 저장 등을 포함합니다..."
