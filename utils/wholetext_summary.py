@@ -29,6 +29,7 @@ def make_summary(wholetext: str) -> str:
             HumanMessage(
                 content=(
                     "다음 문서 [text]를 요약해주세요. 이모지 등의 표현은 일체 사용하지 않으며 "
+                    "중복되는 내용은 없어야 합니다."
                     "주어진 텍스트만을 이용합니다.\n\n"
                     f"[text]\n{wholetext}"
                 )
@@ -41,7 +42,7 @@ def make_summary(wholetext: str) -> str:
     # 실행
     response = summary_chain.invoke("")
 
-    return response.content
+    return "[요약문]" + response.content
 
 if __name__ == "__main__":
     sample_text = "이 문서는 사내 업무 자동화를 위한 가이드입니다. 주요 내용은 RAG기반 문서 처리와 요약, 벡터 DB 저장 등을 포함합니다..."
