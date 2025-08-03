@@ -21,3 +21,10 @@ def get_adaptive_splitter(text: str) -> RecursiveCharacterTextSplitter:
         chunk_overlap=chunk_overlap,
         separators=["\n\n", "\n", ".", "!", "?"]
     )
+    
+if __name__ == "__main__" :
+    text = "가나다라마바사아자차카타파하"
+    print(get_adaptive_splitter(text))
+    print(get_adaptive_splitter(text*2))
+    print(get_adaptive_splitter(text*100))
+    print(get_adaptive_splitter(text*1000))
