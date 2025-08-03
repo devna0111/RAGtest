@@ -10,6 +10,8 @@ from utils.extracting_txt import extract_txt_content
 from presentation_utils.video_processor import transcribe_audio, extract_audio
 from utils.wholetext_summary import make_summary
 from utils.wholetext_toPresentation import make_presentation
+from utils.wholetext_quiz import generate_quiz_from_text
+from utils.wholetext_report import generate_report_from_text
 
 def start_extracting(file_path: str) -> str:
     """
@@ -52,15 +54,21 @@ def split_chunks(file_path: str) -> list:
     summary_text = make_summary(whole_text)
     print("text_요약 끝 및 발표문 제작 시작")
     presentation_text = make_presentation(whole_text)
-    print("text_발표문 끝 및 chunks_split 시작")
+    print("text_발표문 끝 및 퀴즈 제작 시작")
+    quiz_text = generate_quiz_from_text(whole_text)
+    print("text_퀴즈 끝 및 리포트 제작 시작")
+    report_text = generate_report_from_text(whole_text)
+    print("text_리포트 끝 및 chunks_split 시작")
     text_splitter = get_adaptive_splitter(whole_text)
     chunks = text_splitter.split_text(whole_text)
     print("chunks split 끝")
-    result = [Document(page_content=summary_text, metadata={"source": file_path}),
-            Document(page_content=presentation_text, metadata={"source": file_path}),]
+    result = [Document(page_content=summary_text, metadata={"type": "요약","source": file_path}),
+            Document(page_content=presentation_text, metadata={"type": "발표","source": file_path}),
+            Document(page_content=report_text, metadata={"type": "보고서","source": file_path}),
+            Document(page_content=quiz_text, metadata={"type": "퀴즈","source": file_path}),]
     print("Document 객체화")
     for chunk in chunks :
-        result.append(Document(page_content=chunk, metadata={"source": file_path}))
+        result.append(Document(page_content=chunk, metadata={"source": file_path, "type": "body"}))
     return result
 
 
