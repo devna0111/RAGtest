@@ -46,13 +46,19 @@ def split_chunks(file_path: str) -> list:
     3. 문서에서 추출한 전체 텍스트를 의미 있는 청크 단위로 나눈 결과,
     LangChain Document 리스트로 반환
     """
+    print("text_추출시작")
     whole_text = start_extracting(file_path)
+    print("text_추출 끝 및 요약 시작")
     summary_text = make_summary(whole_text)
+    print("text_요약 끝 및 발표문 제작 시작")
     presentation_text = make_presentation(whole_text)
+    print("text_발표문 끝 및 chunks_split 시작")
     text_splitter = get_adaptive_splitter(whole_text)
     chunks = text_splitter.split_text(whole_text)
+    print("chunks split 끝")
     result = [Document(page_content=summary_text, metadata={"source": file_path}),
             Document(page_content=presentation_text, metadata={"source": file_path}),]
+    print("Document 객체화")
     for chunk in chunks :
         result.append(Document(page_content=chunk, metadata={"source": file_path}))
     return result
