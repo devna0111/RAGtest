@@ -1,12 +1,14 @@
 from vectordb_upload_search import question_answer_based_vectorstore
-from collections  import deque
+
 class BufferMemory:
     def __init__(self, max_turns=5):
         self.max_turns = max_turns
-        self.history = deque(maxlen=max_turns)
+        self.history = []
 
     def append(self, user, assistant):
         self.history.append({"user": user, "assistant": assistant})
+        if len(self.history) > self.max_turns:
+            self.history.pop(0)
 
     def get_formatted_history(self):
         # LLM에 넣을 때 사용
@@ -18,7 +20,7 @@ def chatbot(file_path: str = "sample_inputs/sample.txt"):
     print("챗봇을 시작합니다. 종료를 원하시면 'exit', 'bye', '끝', '종료' 중 하나를 입력하세요.")
     memory = BufferMemory(max_turns=5)  # 최근 5턴만 기억
     while True:
-        query = input("어떤 내용이 궁금하세요? : ").strip()
+        query = input("🤖 어떤 내용이 궁금하세요? : ").strip()
         if query.lower() in ["exit", "bye", "끝", "종료"]:
             print("챗봇을 종료합니다.")
             break
@@ -31,7 +33,7 @@ def chatbot(file_path: str = "sample_inputs/sample.txt"):
         print("💬 답변:", answer)
         memory.append(query, answer)
 
-    print("\n대화 로그 요약:")
+    print("\n📚 대화 로그 요약:")
     for i, h in enumerate(memory.history, 1):
         print(f"{i}. Q: {h['user']} → A: {h['assistant']}")
 
