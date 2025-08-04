@@ -70,9 +70,14 @@ def question_answer_based_vectorstore(file_path, query: str = "문서를 요약�
     for keyword, func in filter_map.items():
         if keyword in query:
             print(f"[필터 적용: type={keyword}]")
-            docs = vector_store.similarity_search(query, k=3, filter={"type": keyword})
+            docs = vector_store.similarity_search(query,
+                                                    k=3,
+                                                    # filter={"type": keyword},
+                                                    )
+            # print(docs[0].page_content)
             combined_text = "\n\n".join([doc.page_content for doc in docs])
-            return func(query, combined_text)
+            print(combined_text)
+            return func(query=query, text=combined_text)
 
     # 일반 질문 응답 fallback
     print("[필터 없음 → 전체 문서 검색]")
@@ -94,4 +99,4 @@ def question_answer_based_vectorstore(file_path, query: str = "문서를 요약�
 
 if __name__ == "__main__":
     file_path = "sample_inputs/sample.docx"
-    print(question_answer_based_vectorstore(file_path,query="퀴즈를 4개만 만들어주세요"))
+    print(question_answer_based_vectorstore(file_path,query="문서 이해도 체크를 위한 퀴즈를 3개 내봐"))
