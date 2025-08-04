@@ -2,7 +2,10 @@ from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.runnables import RunnableLambda
 
-llm = ChatOllama(model='qwen2.5vl:7b')
+llm = ChatOllama(model='qwen2.5vl:3b',
+                temperature=0.8,
+                repeat_penalty=1.15,
+                num_predict=512,)
 
 def make_summary(wholetext: str) -> str:
     length = len(wholetext)
@@ -24,6 +27,11 @@ def make_summary(wholetext: str) -> str:
                     "당신은 문서를 받으면 핵심을 요약하는 데 특화된 전문가입니다.\n"
                     f"입력받은 문서의 길이는 {length} 자입니다.\n"
                     f"문서 요약은 1개 청크로 이루어져야 하며 {chunk_size}자 이내로 요약해주세요."
+                        """다음 지침을 따라주세요:
+                        - 같은 내용을 반복하지 마세요
+                        - 간결하고 명확하게 답변하세요
+                        - 한 번 말한 내용은 다시 반복하지 마세요
+                        - 다양한 표현을 사용하세요"""
                 )
             ),
             HumanMessage(
