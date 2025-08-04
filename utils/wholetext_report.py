@@ -15,5 +15,5 @@ def generate_report_from_text(text: str, title: str = "사내 업무 보고서")
 [문서 내용]
 {text}
 """
-    llm = ChatOllama(model="qwen2.5vl:7b")
+    llm = ChatOllama(model='qwen2.5vl:7b', temperature=0.2)
     return llm.invoke(prompt).content
