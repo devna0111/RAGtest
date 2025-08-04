@@ -2,7 +2,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.runnables import RunnableLambda
 
-llm = ChatOllama(model='qwen2.5vl:7b')
+llm = ChatOllama(model='qwen2.5vl:7b', temperature=0.2)
 
 def make_presentation(wholetext: str) -> str:
     length = len(wholetext)

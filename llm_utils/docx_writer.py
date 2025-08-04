@@ -1,12 +1,7 @@
 from docx import Document
 from docx.shared import Pt
 from docx.oxml.ns import qn
-
 import re
-from docx import Document
-from docx.shared import Pt
-from docx.oxml.ns import qn
-
 
 def markdown_to_styled_docx(markdown_text: str, output_path: str = "output/project.docx") -> str:
     doc = Document()

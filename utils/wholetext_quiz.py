@@ -7,13 +7,18 @@ def generate_quiz_from_text(text: str, num_questions: int = 10) -> str:
     """
     prompt = f"""
 당신은 교육용 문서를 기반으로 퀴즈를 생성하는 전문가입니다.
+다음 지침을 따라주세요:
+- 같은 내용을 반복하지 마세요
+- 간결하고 명확하게 답변하세요
+- 한 번 말한 내용은 다시 반복하지 마세요
+- 다양한 표현을 사용하세요
 다음 문서를 바탕으로 이해도를 확인할 수 있는 객관식 문제 {num_questions}개를 만들어주세요.
 각 문항은 보기 5개와 정답 표시를 포함해야 합니다.
 
 [문서 내용]
 {text}
 """
-    llm = ChatOllama(model="qwen2.5vl:7b")
+    llm = ChatOllama(model='qwen2.5vl:7b',temperature=0.2,)
     return llm.invoke(prompt).content
 
 if __name__ == "__main__" :

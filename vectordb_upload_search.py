@@ -55,7 +55,7 @@ def data_to_vectorstore(file_path: str):
 
     return qdrant
 
-def question_answer_based_vectorstore(file_path, query: str = "문서를 요약해주세요") -> str:
+def question_answer_based_vectorstore(file_path='sample_inputs/sample.txt', query: str = "문서를 요약해주세요") -> str:
     vector_store = data_to_vectorstore(file_path)
 
     # 필터 및 함수 매핑
@@ -93,16 +93,19 @@ def question_answer_based_vectorstore(file_path, query: str = "문서를 요약�
 [참고자료]
 {combined_text}
 """
-    llm = ChatOllama(model="qwen2.5vl:7b")
+    llm = ChatOllama(model='qwen2.5vl:7b', repeat_penalty=1.15, temperature=0.2)
     answer = llm.invoke(prompt)
-    return answer
+    return answer.content
 
 if __name__ == "__main__":
     file_path = "sample_inputs/sample.docx"
     query = input('명령어를 입력하세요 : ')
     test = question_answer_based_vectorstore(file_path,query=query)
-    print(test[:200])
+    print(test)
     if '보고서' in query :
         from llm_utils import docx_writer
         docx_writer.markdown_to_styled_docx(test)
-    print("보고서 초안이 작성완료되었습니다.")
+        print("보고서 초안이 작성완료되었습니다.")
+    elif '발표자료' in query :
+        from llm_utils import pptx_writer
+        pptx_writer.save_structured_text_to_pptx(test)
