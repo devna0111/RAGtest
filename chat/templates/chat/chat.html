@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}WebLLM Chat - 채팅{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/chat.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <!-- 왼쪽 사이드바 -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>WebLLM Chat</h3>
+            <p>AI 모델이 브라우저에서 실행</p>
+        </div>
+        
+        <div class="chat-list">
+            <div class="chat-item active">
+                <div class="chat-title">JavaScript Hello World Console</div>
+                <div class="chat-info">2 messages</div>
+                <div class="chat-date">12/3/2024, 9:34:26 AM</div>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <button class="new-chat-btn">새 채팅</button>
+        </div>
+    </div>
+
+    <!-- 메인 채팅 영역 -->
+    <div class="chat-main">
+        <div class="chat-header">
+            <h2>JavaScript Hello World Console</h2>
+            <div class="chat-meta">2 messages</div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message system-message">
+                <div class="message-content">
+                    안녕하세요! 어떻게 도움을 드릴까요?
+                    <div class="system-prompt">System Prompt</div>
+                </div>
+            </div>
+
+            <div class="message user-message">
+                <div class="message-content">
+                    Write one line of JavaScript that writes "Hello world" to the developer console.
+                    <div class="message-time">12/3/2024, 9:34:25 AM</div>
+                </div>
+            </div>
+
+            <div class="message assistant-message">
+                <div class="message-avatar">Llama</div>
+                <div class="message-content">
+                    Here is one line of JavaScript that writes "Hello world" to the developer console:
+                    <br><br>
+                    <code>console.log("Hello world!");</code>
+                    <div class="message-stats">
+                        Profile: 192.4 tokens, Decode: 43.9 tokens, 12/3/2024, 9:34:25 AM
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 파일 드래그앤드롭 영역 -->
+        <div class="file-drop-zone" id="fileDropZone">
+            <div class="drop-content">
+                <div class="drop-icon">📁</div>
+                <p>파일을 여기에 드래그하거나 클릭하여 업로드하세요</p>
+                <input type="file" id="fileInput" multiple style="display: none;">
+            </div>
+        </div>
+
+        <!-- 입력 영역 -->
+        <div class="input-area">
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Enter to send, Shift + Enter to wrap, / to search prompts, : to use commands"
+                        rows="1"
+                    ></textarea>
+                    <button class="file-attach-btn" id="fileAttachBtn">📎</button>
+                    <button class="send-btn" id="sendBtn">전송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 파일 업로드 모달 -->
+<div class="file-modal" id="fileModal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>파일 업로드</h3>
+            <button class="close-btn" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="uploaded-files" id="uploadedFiles"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="cancel-btn" id="cancelUpload">취소</button>
+            <button class="confirm-btn" id="confirmUpload">업로드</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/chat.js' %}"></script>
+{% endblock %}

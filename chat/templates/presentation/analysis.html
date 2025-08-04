@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}WebLLM Chat - 발표분석{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/presentation.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="presentation-container">
+    <div class="presentation-header">
+        <h1>발표 영상 분석</h1>
+        <p>발표 영상을 업로드하여 자세, 음성, 내용을 분석하고 피드백을 받으세요</p>
+    </div>
+
+    <div class="upload-section">
+        <div class="video-upload-zone" id="videoDropZone">
+            <div class="upload-content">
+                <div class="upload-icon"></div>
+                <h3>발표 영상 업로드</h3>
+                <p>MP4, AVI, MOV 파일을 지원합니다</p>
+                <button class="upload-btn" id="videoUploadBtn">파일 선택</button>
+                <input type="file" id="videoInput" accept="video/*" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <div class="analysis-options">
+        <h3>분석 항목 선택</h3>
+        <div class="option-grid">
+            <div class="option-card">
+                <input type="checkbox" id="poseAnalysis" checked>
+                <label for="poseAnalysis">
+                    <div class="option-icon"></div>
+                    <h4>자세 분석</h4>
+                    <p>발표자의 자세와 제스처를 분석합니다</p>
+                </label>
+            </div>
+
+            <div class="option-card">
+                <input type="checkbox" id="audioAnalysis" checked>
+                <label for="audioAnalysis">
+                    <div class="option-icon"></div>
+                    <h4>음성 분석</h4>
+                    <p>목소리 톤, 속도, 발음을 분석합니다</p>
+                </label>
+            </div>
+
+            <div class="option-card">
+                <input type="checkbox" id="contentAnalysis" checked>
+                <label for="contentAnalysis">
+                    <div class="option-icon"></div>
+                    <h4>내용 분석</h4>
+                    <p>발표 내용과 구조를 분석합니다</p>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="analysis-results" id="analysisResults" style="display: none;">
+        <h3>분석 결과</h3>
+        <div class="results-grid">
+            <div class="result-card">
+                <h4>자세 분석 결과</h4>
+                <div class="result-content" id="poseResults">
+                    <div class="loading">분석 중...</div>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <h4>음성 분석 결과</h4>
+                <div class="result-content" id="audioResults">
+                    <div class="loading">분석 중...</div>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <h4>내용 분석 결과</h4>
+                <div class="result-content" id="contentResults">
+                    <div class="loading">분석 중...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feedback-section">
+            <h4>종합 피드백</h4>
+            <div class="feedback-content" id="feedbackContent">
+                <div class="loading">피드백 생성 중...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="analyze-btn" id="startAnalysis" disabled>분석 시작</button>
+        <button class="download-btn" id="downloadReport" style="display: none;">보고서 다운로드</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/presentation.js' %}"></script>
+{% endblock %}
