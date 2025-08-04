@@ -1,0 +1,44 @@
+1. docker download # 가상머신 돌리는 등 할 일이 좀 많음
+2. docker run -p 6333:6333 -v $(pwd)/qdrant_data:/qdrant/storage qdrant/qdrant # 자동으로 다운로드
+2-b. pip install qdrant-client
+3.
+from qdrant_client import QdrantClient
+from qdrant_client.http.models import Distance, VectorParams
+from langchain_community.vectorstores import Qdrant
+from langchain_ollama import OllamaEmbeddings
+from langchain_core.documents import Document
+
+# 1. Qdrant 서버 연결
+client = QdrantClient(host="localhost", port=6333)
+
+# 2. (옵션) 기존 컬렉션 삭제
+client.delete_collection("local_docs")
+
+# 3. 새 컬렉션 생성 (벡터 크기 bge-m3 기준: 1024)
+client.create_collection(
+    collection_name="local_docs",
+    vectors_config=VectorParams(size=1024, distance=Distance.COSINE)
+)
+
+# 4. 임베딩 모델 설정 (Ollama 기반 예시)
+embedding_function = OllamaEmbeddings(model="bge-m3:567m")
+
+# 5. 문서 준비
+documents = [
+    Document(page_content="문서1 내용입니다."),
+    Document(page_content="문서2의 핵심 내용입니다."),
+]
+
+# 6. 벡터 업로드
+qdrant = Qdrant.from_documents(
+    documents=documents,
+    embedding=embedding_function,
+    collection_name="local_docs",
+    client=client
+)
+
+# 7. 검색 테스트
+results = qdrant.similarity_search("문서1과 관련된 내용", k=2)
+for doc in results:
+    print(doc.page_content)
+
