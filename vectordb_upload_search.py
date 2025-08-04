@@ -71,12 +71,12 @@ def question_answer_based_vectorstore(file_path, query: str = "문서를 요약�
         if keyword in query:
             print(f"[필터 적용: type={keyword}]")
             docs = vector_store.similarity_search(query,
-                                                    k=3,
-                                                    # filter={"type": keyword},
+                                                    k=1,
+                                                    filter={"type": keyword},
                                                     )
             # print(docs[0].page_content)
             combined_text = "\n\n".join([doc.page_content for doc in docs])
-            print(combined_text)
+            # print(combined_text)
             return func(query=query, text=combined_text)
 
     # 일반 질문 응답 fallback
@@ -99,4 +99,10 @@ def question_answer_based_vectorstore(file_path, query: str = "문서를 요약�
 
 if __name__ == "__main__":
     file_path = "sample_inputs/sample.docx"
-    print(question_answer_based_vectorstore(file_path,query="문서 이해도 체크를 위한 퀴즈를 3개 내봐"))
+    query = input('명령어를 입력하세요 : ')
+    test = question_answer_based_vectorstore(file_path,query=query)
+    print(test[:200])
+    if '보고서' in query :
+        from llm_utils import docx_writer
+        docx_writer.markdown_to_styled_docx(test)
+    print("보고서 초안이 작성완료되었습니다.")

@@ -5,3 +5,6 @@ uploads/
 chroma_db_multimodal/
 static/
 .env
+temp_imgs/
+temp_wav/
+sample_inputs/
