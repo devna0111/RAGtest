@@ -11,7 +11,7 @@ def image_to_base64(image_path: str) -> str:
         return base64.b64encode(f.read()).decode("utf-8")
 
 
-def analyze_image_with_qwen(image_path: str, model: str = "qwen2.5vl:7b", mode: str = "simple") -> str:
+def analyze_image_with_qwen(image_path: str, model: str = "qwen2.5vl:3b", mode: str = "simple") -> str:
     """
     Qwen2.5-VL 모델을 통해 이미지 분석 결과를 반환
     """
@@ -34,7 +34,7 @@ def analyze_image_with_qwen(image_path: str, model: str = "qwen2.5vl:7b", mode: 
     "같은 말을 반복하지 마세요."
     )
     base64_img = image_to_base64(image_path)
-    llm = ChatOllama(model="qwen2.5vl:7b")
+    llm = ChatOllama(model=model)
     message = HumanMessage(
         content=[
             {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_img}"}},
@@ -43,3 +43,6 @@ def analyze_image_with_qwen(image_path: str, model: str = "qwen2.5vl:7b", mode: 
     )
     response = llm.invoke([message])
     return response.content
+
+if __name__ == "__main__" :
+    print(analyze_image_with_qwen("sample_inputs/sample.png"))
