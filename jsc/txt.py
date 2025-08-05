@@ -16,7 +16,7 @@ def extract_txt_file_as_string(txt_path: str) -> str:
 
 
 if __name__ == "__main__":
-    for file in ["인코딩에러.txt"]:
+    for file in ["guidebook.txt"]:
         print(f"\n파일: {file}")
         try:
             result = extract_txt_file_as_string(file)
