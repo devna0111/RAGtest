@@ -25,4 +25,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('chat/', include('chat.urls')),
     path('presentation/', include('presentation.urls')),
+    path('search/',include('search.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
