@@ -1,15 +1,19 @@
 {
+  "sklearn_version": "1.7.1",
   "best_params": {
-    "cal__base_estimator__C": 8,
-    "cal__base_estimator__class_weight": null,
-    "cal__base_estimator__gamma": 0.2,
-    "sel__k": 20
+    "cal__estimator__C": 32,
+    "cal__estimator__class_weight": {
+      "0": 1,
+      "1": 2
+    },
+    "cal__estimator__gamma": 0.2,
+    "sel__k": 10
   },
   "final": {
-    "acc": 0.8503401360544217,
-    "p_macro": 0.9249146757679181,
-    "p_weighted": 0.8728146548721878,
-    "tag": "Top-K 채택 (k=1, acc_floor=0.840)"
+    "acc": 0.8435374149659864,
+    "p_macro": 0.5910652920962199,
+    "p_weighted": 0.7698997124623045,
+    "tag": "Top-K 채택 (k=3, acc_floor=0.840)"
   },
   "acc_floor": 0.84,
   "seed": 42
